@@ -25,7 +25,7 @@ const osmStyle: StyleSpecification = {
     sources:{
         osm:{
             type: "raster",
-            tiles:["https://tile.openstreetmap.org/{z]/{x}/{y}.png"],
+            tiles:["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
             tileSize:256,
             attribution:"Open Street Map"
         }
