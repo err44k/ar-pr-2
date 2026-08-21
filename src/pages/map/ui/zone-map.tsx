@@ -20,12 +20,12 @@ const SELECTED_FILL_LAYER = "selected-zone-fill";
 const SELECTED_LINE_LAYER = "selected-zone-line";
 
 
-const osmStyle = {
+const osmStyle: StyleSpecification = {
     version:8,
     sources:{
         osm:{
             type: "raster",
-            tiles:["https://tile.openstreetmap.org/{z]/{x}/{y}.png"],
+            tiles:["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
             tileSize:256,
             attribution:"Open Street Map"
         }
@@ -86,7 +86,7 @@ function getDrawStyles(){
 
             }
         }
-        if(layer.type === "line") return layer;
+        if(layer.type !== "line") return layer;
 
         return{
             ...layer,
@@ -163,6 +163,7 @@ export function ZonesMap({
             const features = map.queryRenderedFeatures(
                 event.point, {layers:[ZONES_FILL_LAYER] }
             );
+            if(features.length === 0) onSelectZoneRef.current(null);
         }
 
         const showPointer = () => {map.getCanvas().style.cursor = "pointer";};
@@ -244,5 +245,6 @@ export function ZonesMap({
         else draw.changeMode("simple_select");
 
     },[drawRevision,isCreating]);
-    return <div ref={containerRef} className="zones-map"></div>
+    return <div ref={containerRef} className="!absolute inset-0"></div>
+
 }
