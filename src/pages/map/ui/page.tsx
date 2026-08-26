@@ -25,14 +25,14 @@ export function MapPage(){
 
         const zone: Zone = {
         id:Date.now().toString(36),
-        name: "draftName",
+        name: draftName,
         updatedAt:new Date().toISOString(),
         coordinates:draftCoordinates    
         };
         const nextZone = [zone, ...zones];
         setZones(nextZone);
         setIsCreating(false);
-        setSelectedZoneId(null);
+        setSelectedZoneId(zone.id);
     };
 
     const startCreating = () =>{
@@ -56,7 +56,7 @@ export function MapPage(){
         setSelectedZoneId(null);
     }
 
-    return <main className="g-dvh w-full overflow-hidden relatives">
+    return <main className="h-dvh w-full overflow-hidden relative">
     <ZonesMap
         zones = {zones}
         selectedZoneId={selectedZoneId}
@@ -68,25 +68,26 @@ export function MapPage(){
     />
 
     {panelOpen &&(
-        <aside className="absolute inset-x-0 bottom-0 z-30 flex h-[48dvh] flex-col border-t border-neutral-200 bg-white shadow-x1">
-            <div className="flez items-center justify-between border-b border-neutral-200 px-5 py-4">
+        <aside className="absolute inset-y-0 right-0 w-[360px] h-full bottom-0 z-30 flex flex-col border-t border-neutral-200 bg-white shadow-x1">
+            <div className="flex items-center justify-between border-b border-neutral-200 px-5 py-4">
                 <div>
                     <p className="text-xs font-medium uppercase text-neutral-500">{isCreating ? "Новая зона" : "Полигонная зона "}</p>
 
-                    <h1 className="mt-1 max-w-[270px] truncate text-lg font-semibold">${isCreating ? "Добавление" : selectedZone?.name}</h1>
+                    <h1 className="mt-1 max-w-[270px] truncate text-lg font-semibold">{isCreating ? "Добавление" : selectedZone?.name}</h1>
                 </div>
                 <button type="button" onClick={closePanel} className="grid size-9 place-items-center rounded-md text-neutral-500 hover:bg-neutral-100">
                     <XIcon size={20}/>
                 </button>
+            </div>
 
                 {isCreating ? (
                     <form className="flex flex-col flex-1 min-h-0" onSubmit={saveZone} noValidate>
-                        <div className="min-h-0 flex-1 overflow-y-auto p-5">
+                        <div className="flex flex-col min-h-0 flex-1 overflow-y-auto p-5">
                             <label htmlFor="zone-name" className="mb-2 blocl text-sm font-medium">
                                 Название
                             </label>
                             <input type="text" id="zone" value={draftName} onChange={(e) => {setDraftName(e.currentTarget.value);}} placeholder="Например, Зона действия" maxLength={80} autoFocus className="h-11 w-full rounded-md border border-neutral-300 px-3 text-sm outline-none" />
-                            <div className="mt-6 border-t border-neutral-200 pt-5">
+                            <div className="flex-1 flex flex-col mt-6 border-t border-neutral-200 pt-5">
                                 <div className="flex items-center justify-between gap-4">
                                     <div>
                                         <p className="text-sm font-medium">Полигон</p>
@@ -98,9 +99,9 @@ export function MapPage(){
                                     </div>
                                     <p className="mt-4 text-ms leading-5 text-neutral-500">Расставьте точки на карте и замкните контур кликом по первой точке</p>
                                 </div>
-                                <div className="flex gap-3 border-t border-neutral-200">
+                                <div className="flex-1 flex items-end gap-3">
                                     <button type="button" onClick={closePanel} className="h-10 flex-1 rounded-md border border-neutral-300 px-4 text-sm font-medium">Отменить</button>
-                                    <button type="button" className="h-10 flex-1 rounded-md bg-emerald-700 px-4 text-sm font-medium text-white">Отправить</button>
+                                    <button type="submit" className="h-10 flex-1 rounded-md bg-emerald-700 px-4 text-sm font-medium text-white">Отправить</button>
                                 </div>
                             </div>
                         </div>
@@ -138,11 +139,11 @@ export function MapPage(){
                             </div>
                         </div>
                         <div className="border-t border-neutral-200 p-4">
-                            <button type="button" onClick={deleteZone} className="h-10 flex-1 rounded-md border border-neutral-300 px-4 text-sm font-medium"><TrashIcon size = {16}/>Удалить зону</button>
+                            <button type="button" onClick={deleteZone} className="flex items-center gap-2    h-10 flex-1 rounded-md border border-neutral-300 px-4 text-sm font-medium"><TrashIcon size = {16}/>Удалить зону</button>
                         </div>
                     </div>
                 ) : (null)}
-            </div>
+
         </aside>
     )}
 
